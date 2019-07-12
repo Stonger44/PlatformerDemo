@@ -16,10 +16,16 @@ public class Player : MonoBehaviour
     private float _yVelocity = 0.0f;
     private bool _canDoubleJump = false;
 
+    [SerializeField]
+    private int _collectibles = 0;
+
+    private UIManager _uiManager = null;
+
     // Start is called before the first frame update
     void Start()
     {
         _controller = this.GetComponent<CharacterController>();
+        _uiManager = GameObject.Find("UI").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -45,7 +51,7 @@ public class Player : MonoBehaviour
                 if (_yVelocity <= 3.0f && _yVelocity > 0.0f)
                 {
                     _yVelocity = 20;
-                    Debug.Log("DOUBLE JUMP!");
+                    Debug.Log("DOUBLE JUMP!!");
                 }
                 else
                 {
@@ -61,5 +67,15 @@ public class Player : MonoBehaviour
         velocity.y = _yVelocity;
 
         _controller.Move(velocity * Time.deltaTime);
+    }
+
+    public void CollectCollectible()
+    {
+        _collectibles++;
+
+        if (_uiManager != null)
+        {
+            _uiManager.UpdateCollectibleText(_collectibles);
+        }
     }
 }
