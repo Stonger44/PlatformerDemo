@@ -12,7 +12,7 @@ public class Collectible : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        this.transform.Rotate(0, 0, 1);
     }
 
     private void OnTriggerEnter(Collider other)
