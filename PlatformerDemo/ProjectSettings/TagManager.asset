@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Collectible
   - UI
+  - MovingPlatform
   layers:
   - Default
   - TransparentFX
