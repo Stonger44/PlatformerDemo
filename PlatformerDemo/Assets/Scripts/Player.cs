@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Player : MonoBehaviour
     private float _gravity = 0.75f;
     [SerializeField]
     private float _jumpHeight = 15.0f;
+    [SerializeField]
+    private float _perfectDoubleJumpHeight = 20.0f;
 
     private float _yVelocity = 0.0f;
     private bool _canDoubleJump = false;
@@ -21,11 +24,21 @@ public class Player : MonoBehaviour
 
     private UIManager _uiManager = null;
 
+    private int _lives = 3;
+    private Vector3 _startingPosition = new Vector3(0, 3, 0);
+
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("New Game");
+
         _controller = this.GetComponent<CharacterController>();
         _uiManager = GameObject.Find("UI").GetComponent<UIManager>();
+
+        if (_uiManager != null)
+        {
+            _uiManager.UpdateLivesText(_lives);
+        }
     }
 
     // Update is called once per frame
@@ -33,6 +46,10 @@ public class Player : MonoBehaviour
     {
         Move();
 
+        if (this.transform.position.y < -100)
+        {
+            DamagePlayer();
+        }
     }
 
     public void Move()
@@ -56,7 +73,7 @@ public class Player : MonoBehaviour
             {
                 if (_yVelocity <= 3.0f && _yVelocity > 0.0f)
                 {
-                    _yVelocity = 20;
+                    _yVelocity = _perfectDoubleJumpHeight;
                     Debug.Log("DOUBLE JUMP!!");
                 }
                 else
@@ -82,6 +99,23 @@ public class Player : MonoBehaviour
         if (_uiManager != null)
         {
             _uiManager.UpdateCollectibleText(_collectibles);
+        }
+    }
+
+    public void DamagePlayer()
+    {
+        _lives--;
+        _uiManager.UpdateLivesText(_lives);
+
+        if (_lives < 1)
+        {
+            //End game
+            Debug.Log("GAME OVER");
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            this.transform.position = _startingPosition;
         }
     }
 }
