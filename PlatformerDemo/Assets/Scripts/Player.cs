@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     private float _perfectDoubleJumpHeight = 20.0f;
 
     private float _yVelocity = 0.0f;
+    private bool _canJump = false;
     private bool _canDoubleJump = false;
 
     [SerializeField]
@@ -30,8 +31,6 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("New Game");
-
         _controller = this.GetComponent<CharacterController>();
         _uiManager = GameObject.Find("UI").GetComponent<UIManager>();
 
@@ -61,28 +60,32 @@ public class Player : MonoBehaviour
 
         if (_controller.isGrounded)
         {
+            _canJump = true;
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _yVelocity = _jumpHeight;
+                _canJump = false;
                 _canDoubleJump = true;
             }
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space) && _canDoubleJump)
+            if (Input.GetKeyDown(KeyCode.Space) && (_canJump || _canDoubleJump))
             {
                 if (_yVelocity <= 3.0f && _yVelocity > 0.0f)
                 {
                     _yVelocity = _perfectDoubleJumpHeight;
-                    Debug.Log("DOUBLE JUMP!!");
                 }
                 else
                 {
                     _yVelocity = _jumpHeight;
                 }
 
+                _canJump = false;
                 _canDoubleJump = false;
             }
+
             _yVelocity -= _gravity;
         }
 
@@ -111,7 +114,7 @@ public class Player : MonoBehaviour
         {
             //End game
             Debug.Log("GAME OVER");
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene("Level00");
         }
         else
         {
