@@ -9,11 +9,13 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI _livesText = null;
     [SerializeField]
     private TextMeshProUGUI _collectibleText = null;
-
+    private int _totalCollectibleCount = 0;
     // Start is called before the first frame update
     void Start()
     {
-        
+        _totalCollectibleCount = GameObject.FindGameObjectsWithTag("Collectible").Length;
+
+        _collectibleText.text = "Coins: 0/" + _totalCollectibleCount;
     }
 
     // Update is called once per frame
@@ -24,7 +26,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateCollectibleText(int collectibles)
     {
-        _collectibleText.text = "Coins: " + collectibles;
+        _collectibleText.text = "Coins: " + collectibles + "/" + _totalCollectibleCount;
     }
 
     public void UpdateLivesText(int lives)

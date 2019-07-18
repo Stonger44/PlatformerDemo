@@ -10,11 +10,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 5.0f;
     [SerializeField]
-    private float _gravity = 0.75f;
+    private float _gravity = 0.5f;
     [SerializeField]
-    private float _jumpHeight = 15.0f;
+    private float _jumpPower = 15.0f;
     [SerializeField]
-    private float _perfectDoubleJumpHeight = 20.0f;
+    private float _perfectDoubleJumpPower = 20.0f;
 
     private float _yVelocity = 0.0f;
     private bool _canJump = false;
@@ -60,11 +60,12 @@ public class Player : MonoBehaviour
 
         if (_controller.isGrounded)
         {
+            _yVelocity = -1f;
             _canJump = true;
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                _yVelocity = _jumpHeight;
+                _yVelocity = _jumpPower;
                 _canJump = false;
                 _canDoubleJump = true;
             }
@@ -75,11 +76,11 @@ public class Player : MonoBehaviour
             {
                 if (_yVelocity <= 3.0f && _yVelocity > 0.0f)
                 {
-                    _yVelocity = _perfectDoubleJumpHeight;
+                    _yVelocity = _perfectDoubleJumpPower;
                 }
                 else
                 {
-                    _yVelocity = _jumpHeight;
+                    _yVelocity = _jumpPower;
                 }
 
                 _canJump = false;
