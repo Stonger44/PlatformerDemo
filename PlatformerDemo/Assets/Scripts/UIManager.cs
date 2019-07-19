@@ -9,7 +9,14 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI _livesText = null;
     [SerializeField]
     private TextMeshProUGUI _collectibleText = null;
+    [SerializeField]
+    private TextMeshProUGUI _timeText = null;
+
     private int _totalCollectibleCount = 0;
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,5 +39,10 @@ public class UIManager : MonoBehaviour
     public void UpdateLivesText(int lives)
     {
         _livesText.text = "Lives: " + lives;
+    }
+
+    public void UpdateTimeText(float time)
+    {
+        _timeText.text = "Time: " + time.ToString("f2") + "s";
     }
 }
