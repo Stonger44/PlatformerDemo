@@ -41,8 +41,8 @@ public class UIManager : MonoBehaviour
         _livesText.text = "Lives: " + lives;
     }
 
-    public void UpdateTimeText(float time)
+    public void UpdateTimeText(string elapsedTime)
     {
-        _timeText.text = "Time: " + time.ToString("f2") + "s";
+        _timeText.text = "Time: " + elapsedTime;
     }
 }

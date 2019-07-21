@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private float _timer = 0.0f;
+    private float _elapsedTime = 0.0f;
+
+    private string _timerText = "";
 
     private UIManager _uiManager = null;
 
@@ -22,8 +24,20 @@ public class GameManager : MonoBehaviour
 
     private void UpdateTimer()
     {
-        _timer = Time.time;
+        _elapsedTime += Time.deltaTime;
 
-        _uiManager.UpdateTimeText(_timer);
+        //I don't understand this very well
+        string strMinutes = Mathf.Floor((_elapsedTime % 3600) / 60).ToString("00");
+        float seconds = (_elapsedTime % 60);
+
+        string strSeconds = "";
+        if (seconds < 10)
+            strSeconds = "0" + seconds.ToString("f2");
+        else
+            strSeconds = seconds.ToString("f2");
+
+        _timerText = strMinutes + ":" + strSeconds;
+
+        _uiManager.UpdateTimeText(_timerText);
     }
 }

@@ -562,7 +562,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Time: 0:00.00s'
+  m_text: 'Time: 00:00.00'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1595,7 +1595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
-  _gravity: 0.5
+  _gravity: 1
   _jumpPower: 15
   _perfectDoubleJumpPower: 20
   _collectibles: 0
@@ -2547,7 +2547,7 @@ PrefabInstance:
     - target: {fileID: 293491264900912242, guid: 7b8990e097abc854bbe8add8a0caa760,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 9.5
       objectReference: {fileID: 0}
     - target: {fileID: 293491264900912242, guid: 7b8990e097abc854bbe8add8a0caa760,
         type: 3}

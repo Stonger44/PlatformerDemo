@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 5.0f;
     [SerializeField]
-    private float _gravity = 0.5f;
+    private float _gravity = 1.0f;
     [SerializeField]
     private float _jumpPower = 15.0f;
     [SerializeField]
@@ -120,6 +120,7 @@ public class Player : MonoBehaviour
         else
         {
             this.transform.position = _startingPosition;
+            _yVelocity = 0.0f;
         }
     }
 }
