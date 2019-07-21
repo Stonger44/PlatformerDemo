@@ -8,9 +8,14 @@ public class Player : MonoBehaviour
     private CharacterController _controller;
 
     [SerializeField]
+    private float _lowerBounds = -100f;
+
+    [SerializeField]
     private float _speed = 5.0f;
     [SerializeField]
     private float _gravity = 1.0f;
+    [SerializeField]
+    private float _terminalVelocity = -50.0f;
     [SerializeField]
     private float _jumpPower = 15.0f;
     [SerializeField]
@@ -45,7 +50,7 @@ public class Player : MonoBehaviour
     {
         Move();
 
-        if (this.transform.position.y < -100)
+        if (this.transform.position.y < _lowerBounds)
         {
             DamagePlayer();
         }
@@ -60,7 +65,7 @@ public class Player : MonoBehaviour
 
         if (_controller.isGrounded)
         {
-            _yVelocity = -1f;
+            _yVelocity = -5f;
             _canJump = true;
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -88,6 +93,11 @@ public class Player : MonoBehaviour
             }
 
             _yVelocity -= _gravity;
+
+            if (_yVelocity < _terminalVelocity)
+            {
+                _yVelocity = _terminalVelocity;
+            }
         }
 
         //save and set value of _yVelocity for the next frame update
