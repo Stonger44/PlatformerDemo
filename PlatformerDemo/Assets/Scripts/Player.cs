@@ -28,7 +28,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _collectibles = 0;
 
+    [SerializeField]
     private UIManager _uiManager = null;
+    [SerializeField]
+    private GameManager _gameManager = null;
 
     private int _lives = 3;
     private Vector3 _startingPosition = new Vector3(0, 3, 0);
@@ -37,7 +40,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         _controller = this.GetComponent<CharacterController>();
-        _uiManager = GameObject.Find("UI").GetComponent<UIManager>();
 
         if (_uiManager != null)
         {
@@ -48,7 +50,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
+        if (_gameManager.gameState == "GameRunning" || _gameManager.gameState == "PreGame")
+        {
+            Move(); 
+        }
 
         if (this.transform.position.y < _lowerBounds)
         {
@@ -58,7 +63,12 @@ public class Player : MonoBehaviour
 
     public void Move()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
+        float horizontalInput = 0;
+
+        if (_gameManager.gameState == "GameRunning")
+        {
+            horizontalInput = Input.GetAxis("Horizontal"); 
+        }
 
         Vector3 moveDirection = new Vector3(horizontalInput, 0, 0);
         Vector3 velocity = moveDirection * _speed;
@@ -68,7 +78,7 @@ public class Player : MonoBehaviour
             _yVelocity = -5f;
             _canJump = true;
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && _gameManager.gameState == "GameRunning")
             {
                 _yVelocity = _jumpPower;
                 _canJump = false;
@@ -77,7 +87,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space) && (_canJump || _canDoubleJump))
+            if (Input.GetKeyDown(KeyCode.Space) && (_canJump || _canDoubleJump) && _gameManager.gameState == "GameRunning")
             {
                 if (_yVelocity <= 3.0f && _yVelocity > 0.0f)
                 {

@@ -11,16 +11,22 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField]
     private float _speed = 5.0f;
     private string moveTowards = "";
+
+    private GameManager _gameManager = null;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        MovePlatform();
+        if (_gameManager.gameState != "GameStart" || _gameManager.gameState != "GamePaused")
+        {
+            MovePlatform();
+        }
     }
 
     private void MovePlatform()

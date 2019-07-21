@@ -11,11 +11,10 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI _collectibleText = null;
     [SerializeField]
     private TextMeshProUGUI _timeText = null;
+    [SerializeField]
+    private TextMeshProUGUI _pregameCountDownText = null;
 
     private int _totalCollectibleCount = 0;
-
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -44,5 +43,10 @@ public class UIManager : MonoBehaviour
     public void UpdateTimeText(string elapsedTime)
     {
         _timeText.text = "Time: " + elapsedTime;
+    }
+
+    public void UpdatePreGameCountDowntext(string preGameCountDownText)
+    {
+        _pregameCountDownText.text = preGameCountDownText;
     }
 }
