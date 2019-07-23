@@ -23,7 +23,7 @@ public class MovingPlatform : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (_gameManager.gameState != "GameStart" || _gameManager.gameState != "GamePaused")
+        if (_gameManager.gameState != "GameStart" && _gameManager.gameState != "GamePaused")
         {
             MovePlatform();
         }

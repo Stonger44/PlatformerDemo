@@ -12,7 +12,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _timeText = null;
     [SerializeField]
+    private GameObject _pausePanel = null;
+    [SerializeField]
     private TextMeshProUGUI _pregameCountDownText = null;
+
 
     private int _totalCollectibleCount = 0;
 
@@ -45,8 +48,32 @@ public class UIManager : MonoBehaviour
         _timeText.text = "Time: " + elapsedTime;
     }
 
+    public void ShowPausePanel(bool showPausePanel)
+    {
+        if (showPausePanel)
+            _pausePanel.SetActive(true);
+        else
+            _pausePanel.SetActive(false);
+    }
+
     public void UpdatePreGameCountDowntext(string preGameCountDownText)
     {
+        if (preGameCountDownText == "GO!!")
+        {
+            StartCoroutine(ClearPreGameCountDownText_Routine(preGameCountDownText));
+        }
+        else
+        {
+            _pregameCountDownText.text = preGameCountDownText;
+        }
+    }
+
+    public IEnumerator ClearPreGameCountDownText_Routine(string preGameCountDownText)
+    {
         _pregameCountDownText.text = preGameCountDownText;
+
+        yield return new WaitForSeconds(3);
+
+        _pregameCountDownText.text = "";
     }
 }

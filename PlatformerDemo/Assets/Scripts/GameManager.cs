@@ -13,13 +13,13 @@ public class GameManager : MonoBehaviour
     public string gameState = "GameStart";
 
     private float _elapsedTime = 0.0f;
-
     private string _timerText = "";
+
+    private float _countDownEndTime = 0;
+    private string _preGameCountDownText = "";
 
     [SerializeField]
     private UIManager _uiManager = null;
-    [SerializeField]
-    private GameObject _pausePanel = null;
 
     // Start is called before the first frame update
     void Start()
@@ -36,10 +36,10 @@ public class GameManager : MonoBehaviour
                 SetGameStart();
                 break;
             case "PreGame":
-                SetPreGame();
+                UpdatePreGame();
                 break;
             case "GameRunning":
-                SetGameRunning();
+                UpdateGameRunning();
                 break;
             case "GamePaused":
                 SetGamePaused();
@@ -60,21 +60,30 @@ public class GameManager : MonoBehaviour
     {
         SetTimeScaleAndFixedDeltaTime(0);
 
-        _pausePanel.SetActive(true);
+        _uiManager.ShowPausePanel(true);
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            gameState = "PreGame";
-            _pausePanel.SetActive(false);
+            SetPreGame();
         }
     }
 
     private void SetPreGame()
     {
-        SetTimeScaleAndFixedDeltaTime(1);
+        gameState = "PreGame";
+        _countDownEndTime = Time.time + 3;
+        _preGameCountDownText = "3";
+        _uiManager.ShowPausePanel(false);
     }
 
-    private void SetGameRunning()
+    private void UpdatePreGame()
+    {
+        SetTimeScaleAndFixedDeltaTime(1);
+
+        UpdatePreGameCountDown();
+    }
+
+    private void UpdateGameRunning()
     {
         SetTimeScaleAndFixedDeltaTime(1);
 
@@ -83,7 +92,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             gameState = "GamePaused";
-            _pausePanel.SetActive(true);
+            _uiManager.ShowPausePanel(true);
         }
     }
 
@@ -94,7 +103,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             gameState = "GameRunning";
-            _pausePanel.SetActive(false);
+            _uiManager.ShowPausePanel(false);
         }
     }
 
@@ -110,11 +119,27 @@ public class GameManager : MonoBehaviour
 
     private void UpdatePreGameCountDown()
     {
-        string preGameCountDownText = "3";
+        float timeLeft = _countDownEndTime - Time.time;
 
+        if (timeLeft >= 2)
+        {
+            _preGameCountDownText = "3";
+        }
+        else if (timeLeft < 2 && timeLeft >= 1)
+        {
+            _preGameCountDownText = "2";
+        }
+        else if (timeLeft < 1 && timeLeft >= 0)
+        {
+            _preGameCountDownText = "1";
+        }
+        else
+        {
+            _preGameCountDownText = "GO!!";
+            gameState = "GameRunning";
+        }
 
-
-        _uiManager.UpdatePreGameCountDowntext(preGameCountDownText);
+        _uiManager.UpdatePreGameCountDowntext(_preGameCountDownText);
     }
 
     private void UpdateTimer()

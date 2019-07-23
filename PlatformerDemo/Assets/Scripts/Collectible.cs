@@ -15,7 +15,7 @@ public class Collectible : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_gameManager.gameState != "GameStart" || _gameManager.gameState != "GamePaused")
+        if (_gameManager.gameState != "GameStart" && _gameManager.gameState != "GamePaused")
         {
             this.transform.Rotate(0, 0, 2); 
         }

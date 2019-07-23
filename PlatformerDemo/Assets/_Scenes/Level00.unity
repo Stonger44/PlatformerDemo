@@ -1810,7 +1810,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 3
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1879,13 +1879,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1116249066}
-    characterCount: 1
+    characterCount: 0
     spriteCount: 0
     spaceCount: 0
-    wordCount: 1
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -2016,7 +2016,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState: GameStart
   _uiManager: {fileID: 1482107023}
-  _pausePanel: {fileID: 821717273}
 --- !u!4 &1223559159
 Transform:
   m_ObjectHideFlags: 0
@@ -2856,6 +2855,7 @@ MonoBehaviour:
   _livesText: {fileID: 1398688410}
   _collectibleText: {fileID: 1336162106}
   _timeText: {fileID: 425903144}
+  _pausePanel: {fileID: 821717273}
   _pregameCountDownText: {fileID: 1116249066}
 --- !u!1 &1537354420
 GameObject:
