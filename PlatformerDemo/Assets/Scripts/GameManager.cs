@@ -21,10 +21,14 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private UIManager _uiManager = null;
 
+    private GameObject _stage = null;
+    [SerializeField]
+    private GameObject _stagePrefab = null;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        _stage = GameObject.Find("Stage");
     }
 
     // Update is called once per frame
@@ -62,7 +66,7 @@ public class GameManager : MonoBehaviour
 
         _uiManager.ShowPausePanel(true);
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.R))
         {
             SetPreGame();
         }
@@ -72,49 +76,33 @@ public class GameManager : MonoBehaviour
     {
         gameState = "PreGame";
         _countDownEndTime = Time.time + 3;
-        _preGameCountDownText = "3";
+        _elapsedTime = 0.0f;
         _uiManager.ShowPausePanel(false);
+
+        if (_stage != null)
+        {
+            Destroy(_stage);
+            _stage = Instantiate(_stagePrefab);
+        }
+
+        _uiManager.UpdateLivesText(3);
+
+        _uiManager.GetTotalCollectibleCount();
+        _uiManager.UpdateCollectibleText(0);
+
+        _uiManager.UpdateTimeText("00:00.00");
     }
 
     private void UpdatePreGame()
     {
         SetTimeScaleAndFixedDeltaTime(1);
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SetPreGame();
+        }
+
         UpdatePreGameCountDown();
-    }
-
-    private void UpdateGameRunning()
-    {
-        SetTimeScaleAndFixedDeltaTime(1);
-
-        UpdateTimer();
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            gameState = "GamePaused";
-            _uiManager.ShowPausePanel(true);
-        }
-    }
-
-    private void SetGamePaused()
-    {
-        SetTimeScaleAndFixedDeltaTime(0);
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            gameState = "GameRunning";
-            _uiManager.ShowPausePanel(false);
-        }
-    }
-
-    private void SetGameSuccess()
-    {
-
-    }
-
-    private void SetGameOver()
-    {
-
     }
 
     private void UpdatePreGameCountDown()
@@ -142,6 +130,23 @@ public class GameManager : MonoBehaviour
         _uiManager.UpdatePreGameCountDowntext(_preGameCountDownText);
     }
 
+    private void UpdateGameRunning()
+    {
+        SetTimeScaleAndFixedDeltaTime(1);
+
+        UpdateTimer();
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            gameState = "GamePaused";
+            _uiManager.ShowPausePanel(true);
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SetPreGame();
+        }
+    }
+
     private void UpdateTimer()
     {
         _elapsedTime += Time.deltaTime;
@@ -159,6 +164,31 @@ public class GameManager : MonoBehaviour
         _timerText = strMinutes + ":" + strSeconds;
 
         _uiManager.UpdateTimeText(_timerText);
+    }
+
+    private void SetGamePaused()
+    {
+        SetTimeScaleAndFixedDeltaTime(0);
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            gameState = "GameRunning";
+            _uiManager.ShowPausePanel(false);
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SetPreGame();
+        }
+    }
+
+    private void SetGameSuccess()
+    {
+
+    }
+
+    private void SetGameOver()
+    {
+
     }
 
     public void SetTimeScaleAndFixedDeltaTime(float timeScale)

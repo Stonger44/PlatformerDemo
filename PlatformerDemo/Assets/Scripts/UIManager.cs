@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _totalCollectibleCount = GameObject.FindGameObjectsWithTag("Collectible").Length;
+        _totalCollectibleCount = GetTotalCollectibleCount();
 
         _collectibleText.text = "Coins: 0/" + _totalCollectibleCount;
     }
@@ -31,6 +31,11 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public int GetTotalCollectibleCount()
+    {
+        return GameObject.FindGameObjectsWithTag("Collectible").Length;
     }
 
     public void UpdateCollectibleText(int collectibles)

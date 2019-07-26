@@ -28,10 +28,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _collectibles = 0;
 
-    [SerializeField]
-    private UIManager _uiManager = null;
-    [SerializeField]
     private GameManager _gameManager = null;
+    private UIManager _uiManager = null;
 
     private int _lives = 3;
     private Vector3 _startingPosition = new Vector3(0, 3, 0);
@@ -40,6 +38,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         _controller = this.GetComponent<CharacterController>();
+
+        _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        _uiManager = GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>();
 
         if (_uiManager != null)
         {
