@@ -25,8 +25,7 @@ public class Player : MonoBehaviour
     private bool _canJump = false;
     private bool _canDoubleJump = false;
 
-    [SerializeField]
-    private int _collectibles = 0;
+    public int collectibles = 0;
 
     private GameManager _gameManager = null;
     private UIManager _uiManager = null;
@@ -119,11 +118,11 @@ public class Player : MonoBehaviour
 
     public void CollectCollectible()
     {
-        _collectibles++;
+        collectibles++;
 
         if (_uiManager != null)
         {
-            _uiManager.UpdateCollectibleText(_collectibles);
+            _uiManager.UpdateCollectibleText(collectibles);
         }
     }
 

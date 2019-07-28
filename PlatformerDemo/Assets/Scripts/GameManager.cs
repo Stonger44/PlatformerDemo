@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     private float _countDownEndTime = 0;
     private string _preGameCountDownText = "";
 
+    private Player _playerScript = null;
+
     [SerializeField]
     private UIManager _uiManager = null;
 
@@ -29,11 +31,17 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _stage = GameObject.Find("Stage");
+        _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (_playerScript == null)
+        {
+            _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        }
+
         switch (gameState)
         {
             case "GameStart":
@@ -49,7 +57,7 @@ public class GameManager : MonoBehaviour
                 SetGamePaused();
                 break;
             case "GameSuccess":
-                SetGameSuccess();
+                UpdateGameSuccess();
                 break;
             case "GameOver":
                 SetGameOver();
@@ -83,6 +91,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(_stage);
             _stage = Instantiate(_stagePrefab);
+            _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         }
 
         _uiManager.UpdateLivesText(3);
@@ -145,6 +154,11 @@ public class GameManager : MonoBehaviour
         {
             SetPreGame();
         }
+
+        if (_playerScript.collectibles == _uiManager.totalCollectibleCount)
+        {
+            SetGameSuccess();
+        }
     }
 
     private void UpdateTimer()
@@ -183,7 +197,7 @@ public class GameManager : MonoBehaviour
 
     private void SetGameSuccess()
     {
-
+        gameState = "GameSuccess";
     }
 
     private void SetGameOver()
@@ -195,5 +209,15 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = timeScale;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
+    }
+
+    private void UpdateGameSuccess()
+    {
+        Debug.Log("YOU WIN!!");
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SetPreGame();
+        }
     }
 }

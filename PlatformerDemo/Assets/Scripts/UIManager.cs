@@ -17,14 +17,14 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI _pregameCountDownText = null;
 
 
-    private int _totalCollectibleCount = 0;
+    public int totalCollectibleCount = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        _totalCollectibleCount = GetTotalCollectibleCount();
+        totalCollectibleCount = GetTotalCollectibleCount();
 
-        _collectibleText.text = "Coins: 0/" + _totalCollectibleCount;
+        _collectibleText.text = "Coins: 0/" + totalCollectibleCount;
     }
 
     // Update is called once per frame
@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateCollectibleText(int collectibles)
     {
-        _collectibleText.text = "Coins: " + collectibles + "/" + _totalCollectibleCount;
+        _collectibleText.text = "Coins: " + collectibles + "/" + totalCollectibleCount;
     }
 
     public void UpdateLivesText(int lives)
