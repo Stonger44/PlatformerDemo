@@ -83,6 +83,9 @@ public class GameManager : MonoBehaviour
     private void SetPreGame()
     {
         gameState = "PreGame";
+
+        SetTimeScaleAndFixedDeltaTime(1);
+
         _countDownEndTime = Time.time + 3;
         _elapsedTime = 0.0f;
         _uiManager.ShowPausePanel(false);
@@ -213,11 +216,34 @@ public class GameManager : MonoBehaviour
 
     private void UpdateGameSuccess()
     {
+        //StartCoroutine(GameSuccess_SlowMo_Routine());
         Debug.Log("YOU WIN!!");
 
         if (Input.GetKeyDown(KeyCode.R))
         {
             SetPreGame();
+        }
+    }
+
+    private IEnumerator GameSuccess_SlowMo_Routine()
+    {
+        while (Time.timeScale > 0)
+        {
+            Time.timeScale -= 0.25f;
+
+            if (Time.timeScale < 0)
+            {
+                Time.timeScale = 0;
+            }
+
+            SetTimeScaleAndFixedDeltaTime(Time.timeScale);
+
+            if (Time.timeScale == 0)
+            {
+                break;
+            }
+
+            yield return new WaitForSeconds(0.10f);
         }
     }
 }

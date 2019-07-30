@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_gameManager.gameState == "GameRunning" || _gameManager.gameState == "PreGame")
+        if (_gameManager.gameState == "PreGame" || _gameManager.gameState == "GameRunning" || _gameManager.gameState == "GameSuccess")
         {
             Move(); 
         }
@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
     {
         float horizontalInput = 0;
 
-        if (_gameManager.gameState == "GameRunning")
+        if (_gameManager.gameState == "GameRunning" || _gameManager.gameState == "GameSuccess")
         {
             horizontalInput = Input.GetAxis("Horizontal"); 
         }
@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
             _yVelocity = -5f;
             _canJump = true;
 
-            if (Input.GetKeyDown(KeyCode.Space) && _gameManager.gameState == "GameRunning")
+            if (Input.GetKeyDown(KeyCode.Space) && (_gameManager.gameState == "GameRunning" || _gameManager.gameState == "GameSuccess"))
             {
                 _yVelocity = _jumpPower;
                 _canJump = false;
@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space) && (_canJump || _canDoubleJump) && _gameManager.gameState == "GameRunning")
+            if (Input.GetKeyDown(KeyCode.Space) && (_canJump || _canDoubleJump) && (_gameManager.gameState == "GameRunning" || _gameManager.gameState == "GameSuccess"))
             {
                 if (_yVelocity <= 3.0f && _yVelocity > 0.0f)
                 {
@@ -135,7 +135,7 @@ public class Player : MonoBehaviour
         {
             //End game
             Debug.Log("GAME OVER");
-            SceneManager.LoadScene("Level00");
+            //SceneManager.LoadScene("Level00");
         }
         else
         {
