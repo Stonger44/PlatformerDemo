@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
     private float _countDownEndTime = 0;
     private string _preGameCountDownText = "";
 
+    private float _endGameSlowMoEndTime = 0;
+    private bool _gameFinished = false;
+
     private Player _playerScript = null;
 
     [SerializeField]
@@ -83,6 +86,8 @@ public class GameManager : MonoBehaviour
     private void SetPreGame()
     {
         gameState = "PreGame";
+
+        _gameFinished = false;
 
         SetTimeScaleAndFixedDeltaTime(1);
 
@@ -216,8 +221,10 @@ public class GameManager : MonoBehaviour
 
     private void UpdateGameSuccess()
     {
-        //StartCoroutine(GameSuccess_SlowMo_Routine());
-        Debug.Log("YOU WIN!!");
+        if (_gameFinished != true)
+        {
+            GoEndGameSlowMo();
+        }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -225,25 +232,38 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator GameSuccess_SlowMo_Routine()
+    private void GoEndGameSlowMo()
     {
-        while (Time.timeScale > 0)
+        if (_endGameSlowMoEndTime == 0)
         {
-            Time.timeScale -= 0.25f;
-
-            if (Time.timeScale < 0)
-            {
-                Time.timeScale = 0;
-            }
-
-            SetTimeScaleAndFixedDeltaTime(Time.timeScale);
-
-            if (Time.timeScale == 0)
-            {
-                break;
-            }
-
-            yield return new WaitForSeconds(0.10f);
+            _endGameSlowMoEndTime = Time.time + 0.2f;
         }
+
+        float timeLeft = _endGameSlowMoEndTime - Time.time;
+
+        if (timeLeft > 0.16f)
+        {
+            SetTimeScaleAndFixedDeltaTime(0.8f);
+        }
+        else if (timeLeft > 0.12f)
+        {
+            SetTimeScaleAndFixedDeltaTime(0.6f);
+        }
+        else if (timeLeft >= 0.08f)
+        {
+            SetTimeScaleAndFixedDeltaTime(0.4f);
+        }
+        else if (timeLeft >= 0.04f)
+        {
+            SetTimeScaleAndFixedDeltaTime(0.2f);
+        }
+        else
+        {
+            _gameFinished = true;
+            SetTimeScaleAndFixedDeltaTime(0);
+            Debug.Log("YOU WIN!!");
+            _endGameSlowMoEndTime = 0.0f;
+        }
+
     }
 }
