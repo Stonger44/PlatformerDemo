@@ -12,9 +12,21 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _timeText = null;
     [SerializeField]
+    private TextMeshProUGUI _pregameCountDownText = null;
+
+    [SerializeField]
     private GameObject _pausePanel = null;
     [SerializeField]
-    private TextMeshProUGUI _pregameCountDownText = null;
+    private GameObject _endGamePanel = null;
+
+    [SerializeField]
+    private TextMeshProUGUI _endGameTextOne = null;
+    [SerializeField]
+    private TextMeshProUGUI _endGameTextTwo = null;
+    [SerializeField]
+    private TextMeshProUGUI _endGameTextThree = null;
+    [SerializeField]
+    private TextMeshProUGUI _endGameTextFour = null;
 
 
     public int totalCollectibleCount = 0;
@@ -24,7 +36,7 @@ public class UIManager : MonoBehaviour
     {
         totalCollectibleCount = GetTotalCollectibleCount();
 
-        _collectibleText.text = "Coins: 0/" + totalCollectibleCount;
+        UpdateCollectibleText(0);
     }
 
     // Update is called once per frame
@@ -55,10 +67,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowPausePanel(bool showPausePanel)
     {
-        if (showPausePanel)
-            _pausePanel.SetActive(true);
-        else
-            _pausePanel.SetActive(false);
+        _pausePanel.SetActive(showPausePanel);
     }
 
     public void UpdatePreGameCountDowntext(string preGameCountDownText)
@@ -80,5 +89,29 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(3);
 
         _pregameCountDownText.text = "";
+    }
+
+    public void ShowEndGamePanel(bool showEndGamePanel)
+    {
+        _endGamePanel.SetActive(showEndGamePanel);
+    }
+
+    public void UpdateEndGamePanel(string endGameResult)
+    {
+        switch (endGameResult)
+        {
+            case "Success":
+
+                break;
+            case "NewBestTime":
+
+                break;
+            case "GameOver":
+
+                break;
+            default:
+
+                break;
+        }
     }
 }

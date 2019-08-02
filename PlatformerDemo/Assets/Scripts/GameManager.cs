@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
         SetTimeScaleAndFixedDeltaTime(0);
 
         _uiManager.ShowPausePanel(true);
+        _uiManager.ShowEndGamePanel(false);
 
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.R))
         {
@@ -94,6 +95,7 @@ public class GameManager : MonoBehaviour
         _countDownEndTime = Time.time + 3;
         _elapsedTime = 0.0f;
         _uiManager.ShowPausePanel(false);
+        _uiManager.ShowEndGamePanel(false);
 
         if (_stage != null)
         {
@@ -236,34 +238,42 @@ public class GameManager : MonoBehaviour
     {
         if (_endGameSlowMoEndTime == 0)
         {
-            _endGameSlowMoEndTime = Time.time + 0.2f;
+            _endGameSlowMoEndTime = Time.time + 0.5f;
         }
 
         float timeLeft = _endGameSlowMoEndTime - Time.time;
 
-        if (timeLeft > 0.16f)
+        if (timeLeft > 0.4f)
         {
             SetTimeScaleAndFixedDeltaTime(0.8f);
         }
-        else if (timeLeft > 0.12f)
+        else if (timeLeft > 0.3f)
         {
             SetTimeScaleAndFixedDeltaTime(0.6f);
         }
-        else if (timeLeft >= 0.08f)
+        else if (timeLeft >= 0.2f)
         {
             SetTimeScaleAndFixedDeltaTime(0.4f);
         }
-        else if (timeLeft >= 0.04f)
+        else if (timeLeft >= 0.1f)
         {
             SetTimeScaleAndFixedDeltaTime(0.2f);
         }
         else
         {
-            _gameFinished = true;
-            SetTimeScaleAndFixedDeltaTime(0);
-            Debug.Log("YOU WIN!!");
-            _endGameSlowMoEndTime = 0.0f;
+            SetEndGame();
         }
 
+    }
+
+    private void SetEndGame()
+    {
+        _gameFinished = true;
+
+        SetTimeScaleAndFixedDeltaTime(0);
+        _endGameSlowMoEndTime = 0.0f;
+
+        _uiManager.ShowEndGamePanel(true);
+        _uiManager.UpdateEndGamePanel("Success");
     }
 }

@@ -3028,8 +3028,13 @@ MonoBehaviour:
   _livesText: {fileID: 1398688410}
   _collectibleText: {fileID: 1336162106}
   _timeText: {fileID: 425903144}
-  _pausePanel: {fileID: 821717273}
   _pregameCountDownText: {fileID: 1116249066}
+  _pausePanel: {fileID: 821717273}
+  _endGamePanel: {fileID: 354126453}
+  _endGameTextOne: {fileID: 706157686}
+  _endGameTextTwo: {fileID: 1739988106}
+  _endGameTextThree: {fileID: 1087392645}
+  _endGameTextFour: {fileID: 929437364}
   totalCollectibleCount: 0
 --- !u!1 &1537354420
 GameObject:
