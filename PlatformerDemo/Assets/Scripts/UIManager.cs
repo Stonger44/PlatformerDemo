@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject _pausePanel = null;
     [SerializeField]
+    private TextMeshProUGUI _instructionTextZero = null;
+    [SerializeField]
     private GameObject _endGamePanel = null;
 
     [SerializeField]
@@ -96,12 +98,12 @@ public class UIManager : MonoBehaviour
         _endGamePanel.SetActive(showEndGamePanel);
     }
 
-    public void UpdateEndGamePanel(string endGameResult)
+    public void UpdateEndGamePanel(string timerText, string endGameResult)
     {
         switch (endGameResult)
         {
             case "Success":
-
+                UpdateEndGameSuccessText(timerText);
                 break;
             case "NewBestTime":
 
@@ -113,5 +115,13 @@ public class UIManager : MonoBehaviour
 
                 break;
         }
+    }
+
+    public void UpdateEndGameSuccessText(string timerText)
+    {
+        _endGameTextOne.text = "SUCCESS";
+        _endGameTextTwo.text = "Time: " + timerText;
+        _endGameTextThree.text = "Best Time: " + timerText;
+        _endGameTextFour.text = "<sprite=\"PC\" name=\"R\"> to Retry";
     }
 }

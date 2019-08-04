@@ -35,6 +35,14 @@ public class GameManager : MonoBehaviour
     {
         _stage = GameObject.Find("Stage");
         _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
+        if (PlayerPrefs.GetFloat("BestTime") == 0 && PlayerPrefs.GetString("BestTimeText") == null)
+        {
+            PlayerPrefs.SetFloat("BestTime", 44);
+            PlayerPrefs.SetString("BestTimeText", "00:44.00");
+        }
+
+        //PlayerPrefs.DeleteAll();
     }
 
     // Update is called once per frame
@@ -273,7 +281,15 @@ public class GameManager : MonoBehaviour
         SetTimeScaleAndFixedDeltaTime(0);
         _endGameSlowMoEndTime = 0.0f;
 
+        if (_elapsedTime < PlayerPrefs.GetFloat("BestTime"))
+        {
+            _uiManager.UpdateEndGamePanel(_timerText, "NewBestTime");
+        }
+        else
+        {
+            _uiManager.UpdateEndGamePanel(_timerText, "Success");
+        }
+
         _uiManager.ShowEndGamePanel(true);
-        _uiManager.UpdateEndGamePanel("Success");
     }
 }
