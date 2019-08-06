@@ -98,15 +98,15 @@ public class UIManager : MonoBehaviour
         _endGamePanel.SetActive(showEndGamePanel);
     }
 
-    public void UpdateEndGamePanel(string timerText, string endGameResult)
+    public void UpdateEndGamePanel(string timerText, string bestTimeText, string endGameResult)
     {
         switch (endGameResult)
         {
             case "Success":
-                UpdateEndGameSuccessText(timerText);
+                UpdateEndGameSuccessText(timerText, bestTimeText);
                 break;
             case "NewBestTime":
-
+                UpdateEndGameNestBestTimeText(timerText, bestTimeText);
                 break;
             case "GameOver":
 
@@ -117,11 +117,23 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateEndGameSuccessText(string timerText)
+    public void UpdateEndGameSuccessText(string timerText, string bestTimeText)
     {
-        _endGameTextOne.text = "SUCCESS";
+        _endGameTextOne.text = "SUCCESS!!";
         _endGameTextTwo.text = "Time: " + timerText;
-        _endGameTextThree.text = "Best Time: " + timerText;
-        _endGameTextFour.text = "<sprite=\"PC\" name=\"R\"> to Retry";
+        _endGameTextThree.text = "Best Time: " + bestTimeText;
+    }
+
+    public void UpdateEndGameNestBestTimeText(string timerText, string bestTimeText)
+    {
+        _endGameTextOne.text = "NEW BEST TIME!!";
+        _endGameTextTwo.text = "Time: " + timerText;
+        _endGameTextThree.text = "Best Time: " + bestTimeText;
+    }
+
+    public void UpdateBestTime(string bestTime)
+    {
+        _instructionTextZero.text = "Best Time: " + bestTime;
+        _endGameTextThree.text = "Best Time: " + bestTime;
     }
 }

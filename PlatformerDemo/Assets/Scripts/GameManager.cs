@@ -30,19 +30,23 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject _stagePrefab = null;
 
+    private float _bestTimeFloat = 0.0f;
+    private string _bestTimeText = "";
+
     // Start is called before the first frame update
     void Start()
     {
         _stage = GameObject.Find("Stage");
         _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
-        if (PlayerPrefs.GetFloat("BestTime") == 0 && PlayerPrefs.GetString("BestTimeText") == null)
-        {
-            PlayerPrefs.SetFloat("BestTime", 44);
-            PlayerPrefs.SetString("BestTimeText", "00:44.00");
-        }
+        PlayerPrefs.DeleteAll();
+        _bestTimeFloat = PlayerPrefs.GetFloat("BestTime");
+        _bestTimeText = PlayerPrefs.GetString("BestTimeText");
 
-        //PlayerPrefs.DeleteAll();
+        if (_bestTimeFloat == 0 && _bestTimeText == "")
+        {
+            SetPlayerPrefBestTime(44, "00:44.00");
+        }
     }
 
     // Update is called once per frame
@@ -79,12 +83,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void SetPlayerPrefBestTime(float bestTimeFloat, string bestTimeText)
+    {
+        PlayerPrefs.SetFloat("BestTime", bestTimeFloat);
+        PlayerPrefs.SetString("BestTimeText", bestTimeText);
+
+        _bestTimeFloat = PlayerPrefs.GetFloat("BestTime");
+        _bestTimeText = PlayerPrefs.GetString("BestTimeText");
+    }
+
     private void SetGameStart()
     {
         SetTimeScaleAndFixedDeltaTime(0);
 
         _uiManager.ShowPausePanel(true);
         _uiManager.ShowEndGamePanel(false);
+
+        _uiManager.UpdateBestTime(_bestTimeText);
 
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.R))
         {
@@ -118,6 +133,8 @@ public class GameManager : MonoBehaviour
         _uiManager.UpdateCollectibleText(0);
 
         _uiManager.UpdateTimeText("00:00.00");
+
+        _uiManager.UpdateBestTime(_bestTimeText);
     }
 
     private void UpdatePreGame()
@@ -281,13 +298,18 @@ public class GameManager : MonoBehaviour
         SetTimeScaleAndFixedDeltaTime(0);
         _endGameSlowMoEndTime = 0.0f;
 
-        if (_elapsedTime < PlayerPrefs.GetFloat("BestTime"))
+        if (_elapsedTime < _bestTimeFloat)
         {
-            _uiManager.UpdateEndGamePanel(_timerText, "NewBestTime");
+            SetPlayerPrefBestTime(_elapsedTime, _timerText);
+
+            if (_timerText == _bestTimeText)
+            {
+                _uiManager.UpdateEndGamePanel(_timerText, _bestTimeText, "NewBestTime");
+            }
         }
         else
         {
-            _uiManager.UpdateEndGamePanel(_timerText, "Success");
+            _uiManager.UpdateEndGamePanel(_timerText, _bestTimeText, "Success");
         }
 
         _uiManager.ShowEndGamePanel(true);
