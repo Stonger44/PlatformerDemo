@@ -39,13 +39,12 @@ public class GameManager : MonoBehaviour
         _stage = GameObject.Find("Stage");
         _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
-        PlayerPrefs.DeleteAll();
         _bestTimeFloat = PlayerPrefs.GetFloat("BestTime");
         _bestTimeText = PlayerPrefs.GetString("BestTimeText");
 
         if (_bestTimeFloat == 0 && _bestTimeText == "")
         {
-            SetPlayerPrefBestTime(44, "00:44.00");
+            ResetBestTime();
         }
     }
 
@@ -60,7 +59,7 @@ public class GameManager : MonoBehaviour
         switch (gameState)
         {
             case "GameStart":
-                SetGameStart();
+                UpdateGameStart();
                 break;
             case "PreGame":
                 UpdatePreGame();
@@ -69,7 +68,7 @@ public class GameManager : MonoBehaviour
                 UpdateGameRunning();
                 break;
             case "GamePaused":
-                SetGamePaused();
+                UpdateGamePaused();
                 break;
             case "GameSuccess":
                 UpdateGameSuccess();
@@ -92,7 +91,13 @@ public class GameManager : MonoBehaviour
         _bestTimeText = PlayerPrefs.GetString("BestTimeText");
     }
 
-    private void SetGameStart()
+    private void ResetBestTime()
+    {
+        SetPlayerPrefBestTime(44, "00:44.00");
+        _uiManager.UpdateBestTime(_bestTimeText);
+    }
+
+    private void UpdateGameStart()
     {
         SetTimeScaleAndFixedDeltaTime(0);
 
@@ -104,6 +109,10 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.R))
         {
             SetPreGame();
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            ResetBestTime();
         }
     }
 
@@ -215,7 +224,7 @@ public class GameManager : MonoBehaviour
         _uiManager.UpdateTimeText(_timerText);
     }
 
-    private void SetGamePaused()
+    private void UpdateGamePaused()
     {
         SetTimeScaleAndFixedDeltaTime(0);
 
@@ -227,6 +236,10 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             SetPreGame();
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            ResetBestTime();
         }
     }
 
