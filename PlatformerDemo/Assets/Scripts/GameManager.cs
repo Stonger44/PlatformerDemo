@@ -201,7 +201,7 @@ public class GameManager : MonoBehaviour
 
         if (_playerScript.collectibles == _uiManager.totalCollectibleCount)
         {
-            SetGameSuccess();
+            gameState = "GameSuccess";
         }
     }
 
@@ -245,7 +245,7 @@ public class GameManager : MonoBehaviour
 
     private void SetGameSuccess()
     {
-        gameState = "GameSuccess";
+        
     }
 
     private void SetGameOver()
@@ -265,10 +265,12 @@ public class GameManager : MonoBehaviour
         {
             GoEndGameSlowMo();
         }
-
-        if (Input.GetKeyDown(KeyCode.R))
+        else
         {
-            SetPreGame();
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SetPreGame();
+            }
         }
     }
 
@@ -276,26 +278,34 @@ public class GameManager : MonoBehaviour
     {
         if (_endGameSlowMoEndTime == 0)
         {
-            _endGameSlowMoEndTime = Time.time + 0.5f;
+            _endGameSlowMoEndTime = Time.time + 0.25f;
         }
 
         float timeLeft = _endGameSlowMoEndTime - Time.time;
 
-        if (timeLeft > 0.4f)
+        if (timeLeft > 0.25f)
         {
             SetTimeScaleAndFixedDeltaTime(0.8f);
         }
-        else if (timeLeft > 0.3f)
+        else if (timeLeft > 0.2f)
         {
             SetTimeScaleAndFixedDeltaTime(0.6f);
         }
-        else if (timeLeft >= 0.2f)
+        else if (timeLeft >= 0.15f)
         {
             SetTimeScaleAndFixedDeltaTime(0.4f);
         }
         else if (timeLeft >= 0.1f)
         {
             SetTimeScaleAndFixedDeltaTime(0.2f);
+        }
+        else if (timeLeft >= 0.05f)
+        {
+            SetTimeScaleAndFixedDeltaTime(0.1f);
+        }
+        else if (timeLeft >= 0.025f)
+        {
+            SetTimeScaleAndFixedDeltaTime(0.05f);
         }
         else
         {
@@ -304,14 +314,18 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void SetEndGame()
+    public void SetEndGame()
     {
         _gameFinished = true;
 
         SetTimeScaleAndFixedDeltaTime(0);
         _endGameSlowMoEndTime = 0.0f;
 
-        if (_elapsedTime < _bestTimeFloat)
+        if (_playerScript.collectibles < _uiManager.totalCollectibleCount)
+        {
+            _uiManager.UpdateEndGamePanel(_timerText, _bestTimeText, "GameOver");
+        }
+        else if (_elapsedTime < _bestTimeFloat)
         {
             SetPlayerPrefBestTime(_elapsedTime, _timerText);
 

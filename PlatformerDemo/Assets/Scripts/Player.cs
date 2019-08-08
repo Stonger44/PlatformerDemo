@@ -128,14 +128,15 @@ public class Player : MonoBehaviour
 
     public void DamagePlayer()
     {
-        _lives--;
-        _uiManager.UpdateLivesText(_lives);
-
-        if (_lives < 1)
+        if (_lives > 0)
         {
-            //End game
-            Debug.Log("GAME OVER");
-            //SceneManager.LoadScene("Level00");
+            _lives--;
+            _uiManager.UpdateLivesText(_lives);
+        }
+
+        if (_lives == 0)
+        {
+            _gameManager.SetEndGame();
         }
         else
         {

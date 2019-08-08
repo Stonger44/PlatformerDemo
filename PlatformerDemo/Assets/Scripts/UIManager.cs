@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
 
 
     public int totalCollectibleCount = 0;
+    private int _playerCollectibles = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -54,7 +55,9 @@ public class UIManager : MonoBehaviour
 
     public void UpdateCollectibleText(int collectibles)
     {
-        _collectibleText.text = "Coins: " + collectibles + "/" + totalCollectibleCount;
+        _playerCollectibles = collectibles;
+
+        _collectibleText.text = "Coins: " + _playerCollectibles + "/" + totalCollectibleCount;
     }
 
     public void UpdateLivesText(int lives)
@@ -103,32 +106,27 @@ public class UIManager : MonoBehaviour
         switch (endGameResult)
         {
             case "Success":
-                UpdateEndGameSuccessText(timerText, bestTimeText);
+                _endGameTextOne.text = "SUCCESS!!";
+                _endGameTextTwo.text = "Time: " + timerText;
+                _endGameTextThree.text = "Best Time: " + bestTimeText;
+                _endGameTextFour.text = "<sprite=\"PC\" name=\"R\"> to Retry";
                 break;
             case "NewBestTime":
-                UpdateEndGameNestBestTimeText(timerText, bestTimeText);
+                _endGameTextOne.text = "NEW BEST TIME!!";
+                _endGameTextTwo.text = "Time: " + timerText;
+                _endGameTextThree.text = "Best Time: " + bestTimeText;
+                _endGameTextFour.text = "<sprite=\"PC\" name=\"R\"> to Retry";
                 break;
             case "GameOver":
-
+                _endGameTextOne.text = "GAME OVER";
+                _endGameTextTwo.text = "Coins: " + _playerCollectibles + "/" + totalCollectibleCount;
+                _endGameTextThree.text = "Best Time: " + bestTimeText;
+                _endGameTextFour.text = "<sprite=\"PC\" name=\"R\"> to Retry";
                 break;
             default:
 
                 break;
         }
-    }
-
-    public void UpdateEndGameSuccessText(string timerText, string bestTimeText)
-    {
-        _endGameTextOne.text = "SUCCESS!!";
-        _endGameTextTwo.text = "Time: " + timerText;
-        _endGameTextThree.text = "Best Time: " + bestTimeText;
-    }
-
-    public void UpdateEndGameNestBestTimeText(string timerText, string bestTimeText)
-    {
-        _endGameTextOne.text = "NEW BEST TIME!!";
-        _endGameTextTwo.text = "Time: " + timerText;
-        _endGameTextThree.text = "Best Time: " + bestTimeText;
     }
 
     public void UpdateBestTime(string bestTime)
