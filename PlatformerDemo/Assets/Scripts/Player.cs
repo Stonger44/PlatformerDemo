@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 5.0f;
     [SerializeField]
-    private float _gravity = 0.5f;
+    private float _gravity = 1f;
     [SerializeField]
     private float _terminalVelocity = -50.0f;
     [SerializeField]
@@ -22,8 +22,12 @@ public class Player : MonoBehaviour
     private float _perfectDoubleJumpPower = 20.0f;
 
     private float _yVelocity = 0.0f;
+    private float _xVelocity = 0.0f;
+    
     private bool _canJump = false;
     private bool _canDoubleJump = false;
+
+    private float _midairControlReEnabledTime = 0.0f;
 
     public int collectibles = 0;
 
@@ -64,18 +68,55 @@ public class Player : MonoBehaviour
     public void Move()
     {
         float horizontalInput = 0;
+        Vector3 moveDirection;
+        Vector3 velocity;
 
         if (_gameManager.gameState == "GameRunning" || _gameManager.gameState == "GameSuccess")
         {
-            horizontalInput = Input.GetAxis("Horizontal"); 
+            horizontalInput = Input.GetAxis("Horizontal") * 1.5f;
         }
 
-        Vector3 moveDirection = new Vector3(horizontalInput, 0, 0);
-        Vector3 velocity = moveDirection * _speed;
+
+        if (_midairControlReEnabledTime != 0 && _midairControlReEnabledTime > Time.time)
+        {
+            //player cannot change directions in midair
+        }
+        else
+        {
+            if (_controller.isGrounded)
+            {
+                if (horizontalInput != 0)
+                    _xVelocity = horizontalInput;
+            }
+            else
+            {
+                if (horizontalInput >= 1 || horizontalInput <= -1)
+                    _xVelocity = horizontalInput;
+            }
+        }
+
+        moveDirection = new Vector3(_xVelocity, 0, 0);
+        velocity = moveDirection * _speed;
 
         if (_controller.isGrounded)
         {
             _yVelocity = -5f;
+
+            if (_xVelocity < 0)
+            {
+                _xVelocity += 0.05f;
+
+                if (_xVelocity > 0)
+                    _xVelocity = 0;
+            }
+            if (_xVelocity > 0)
+            {
+                _xVelocity -= 0.05f;
+
+                if (_xVelocity < 0)
+                    _xVelocity = 0;
+            }
+
             _canJump = true;
 
             if (Input.GetKeyDown(KeyCode.Space) && (_gameManager.gameState == "GameRunning" || _gameManager.gameState == "GameSuccess"))
@@ -110,10 +151,23 @@ public class Player : MonoBehaviour
             }
         }
 
-        //save and set value of _yVelocity for the next frame update
         velocity.y = _yVelocity;
 
         _controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (!_controller.isGrounded && hit.normal.y < 0.1f)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _yVelocity = _jumpPower;
+                _xVelocity = hit.normal.x * 2;
+
+                _midairControlReEnabledTime = Time.time + 1;
+            }
+        }
     }
 
     public void CollectCollectible()
@@ -142,6 +196,7 @@ public class Player : MonoBehaviour
         {
             this.transform.position = _startingPosition;
             _yVelocity = 0.0f;
+            _xVelocity = 0.0f;
         }
     }
 }
