@@ -91,7 +91,18 @@ public class Player : MonoBehaviour
             else
             {
                 if (horizontalInput >= 1 || horizontalInput <= -1)
-                    _xVelocity = horizontalInput;
+                {
+                    if ((_xVelocity > 0 && horizontalInput < 0) || (_xVelocity < 0 && horizontalInput > 0))
+                    {
+                        _xVelocity += horizontalInput;
+                    }
+                    else
+                    {
+                        _xVelocity = horizontalInput;
+                    }
+                    
+                }
+                    
             }
         }
 
@@ -163,7 +174,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _yVelocity = _jumpPower;
-                _xVelocity = hit.normal.x * 2;
+                _xVelocity = hit.normal.x * 1.5f;
 
                 _midairControlReEnabledTime = Time.time + 1;
             }
