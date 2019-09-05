@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3702655032674890398}
   - component: {fileID: 3702655032674890385}
   m_Layer: 0
-  m_Name: VerticalPlatform
+  m_Name: PlatformVertical
   m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

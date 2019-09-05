@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingPlatform : MonoBehaviour
+public class MovingObject : MonoBehaviour
 {
     [SerializeField]
     private Vector3 _pointA = new Vector3();

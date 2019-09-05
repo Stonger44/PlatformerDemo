@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 5.0f;
     [SerializeField]
-    private float _gravity = 1f;
+    private float _gravity = 0.5f;
     [SerializeField]
     private float _terminalVelocity = -50.0f;
     [SerializeField]
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
             if (_controller.isGrounded)
             {
                 if (horizontalInput != 0)
-                    _xVelocity = horizontalInput;
+                    _xVelocity = horizontalInput * 1.25f;
             }
             else
             {
@@ -100,7 +100,6 @@ public class Player : MonoBehaviour
                     {
                         _xVelocity = horizontalInput;
                     }
-                    
                 }
                     
             }
