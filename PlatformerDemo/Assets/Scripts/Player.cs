@@ -90,18 +90,30 @@ public class Player : MonoBehaviour
             }
             else
             {
-                if (horizontalInput >= 1 || horizontalInput <= -1)
+                if (horizontalInput != 0)
                 {
-                    if ((_xVelocity > 0 && horizontalInput < 0) || (_xVelocity < 0 && horizontalInput > 0))
+                    _xVelocity += horizontalInput;
+
+                    if (_xVelocity > 1.5f)
                     {
-                        _xVelocity += horizontalInput;
+                        _xVelocity = 1.5f;
                     }
-                    else
+                    if (_xVelocity < -1.5f)
                     {
-                        _xVelocity = horizontalInput;
+                        _xVelocity = -1.5f;
                     }
+
+
+
+                    //if ((_xVelocity > 0 && horizontalInput < 0) || (_xVelocity < 0 && horizontalInput > 0))
+                    //{
+                    //    _xVelocity += horizontalInput;
+                    //}
+                    //else if ((_xVelocity > 0 && horizontalInput > 0) || (_xVelocity < 0 && horizontalInput < 0))
+                    //{
+                    //    _xVelocity = horizontalInput;
+                    //}
                 }
-                    
             }
         }
 
@@ -168,14 +180,26 @@ public class Player : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (!_controller.isGrounded && hit.normal.y < 0.1f)
+        if (!_controller.isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (hit.normal.y < 0.1f)
             {
-                _yVelocity = _jumpPower;
-                _xVelocity = hit.normal.x * 1.5f;
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    _yVelocity = _jumpPower;
+                    _xVelocity = hit.normal.x * 1.5f;
 
-                _midairControlReEnabledTime = Time.time + 1;
+                    _midairControlReEnabledTime = Time.time + 1;
+                }
+                else
+                {
+                    float xNormal = hit.normal.x;
+
+                    if (xNormal > 0)
+                        _xVelocity = -0.1f;
+                    if (xNormal < 0)
+                        _xVelocity = 0.1f;
+                } 
             }
         }
     }
