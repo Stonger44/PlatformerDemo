@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
 
         if (_gameManager.gameState == "GameRunning" || _gameManager.gameState == "GameSuccess")
         {
-            horizontalInput = Input.GetAxis("Horizontal") * 1.5f;
+            horizontalInput = Input.GetAxis("Horizontal");
         }
 
 
@@ -86,13 +86,13 @@ public class Player : MonoBehaviour
             if (_controller.isGrounded)
             {
                 if (horizontalInput != 0)
-                    _xVelocity = horizontalInput * 1.25f;
+                    _xVelocity = horizontalInput * 2f;
             }
             else
             {
                 if (horizontalInput != 0)
                 {
-                    _xVelocity += horizontalInput;
+                    _xVelocity += horizontalInput * 1.5f;
 
                     if (_xVelocity > 1.5f)
                     {
@@ -102,17 +102,6 @@ public class Player : MonoBehaviour
                     {
                         _xVelocity = -1.5f;
                     }
-
-
-
-                    //if ((_xVelocity > 0 && horizontalInput < 0) || (_xVelocity < 0 && horizontalInput > 0))
-                    //{
-                    //    _xVelocity += horizontalInput;
-                    //}
-                    //else if ((_xVelocity > 0 && horizontalInput > 0) || (_xVelocity < 0 && horizontalInput < 0))
-                    //{
-                    //    _xVelocity = horizontalInput;
-                    //}
                 }
             }
         }
@@ -126,14 +115,14 @@ public class Player : MonoBehaviour
 
             if (_xVelocity < 0)
             {
-                _xVelocity += 0.05f;
+                _xVelocity += 0.1f;
 
                 if (_xVelocity > 0)
                     _xVelocity = 0;
             }
             if (_xVelocity > 0)
             {
-                _xVelocity -= 0.05f;
+                _xVelocity -= 0.1f;
 
                 if (_xVelocity < 0)
                     _xVelocity = 0;
@@ -187,9 +176,9 @@ public class Player : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     _yVelocity = _jumpPower;
-                    _xVelocity = hit.normal.x * 1.5f;
+                    _xVelocity = hit.normal.x * 2f;
 
-                    _midairControlReEnabledTime = Time.time + 1;
+                    _midairControlReEnabledTime = Time.time + 0.5f;
                 }
                 else
                 {
