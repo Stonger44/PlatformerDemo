@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
             {
                 if (horizontalInput != 0)
                 {
-                    _xVelocity += horizontalInput * 1.5f;
+                    _xVelocity += horizontalInput * 0.5f;
 
                     if (_xVelocity > 1.5f)
                     {
