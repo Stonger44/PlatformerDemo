@@ -73,9 +73,6 @@ public class GameManager : MonoBehaviour
             case "GameSuccess":
                 UpdateGameSuccess();
                 break;
-            case "GameOver":
-                SetGameOver();
-                break;
             default:
 
                 break;
@@ -128,6 +125,13 @@ public class GameManager : MonoBehaviour
         _elapsedTime = 0.0f;
         _uiManager.ShowPausePanel(false);
         _uiManager.ShowEndGamePanel(false);
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+        {
+            Destroy(player);
+        }
 
         if (_stage != null)
         {
@@ -241,16 +245,6 @@ public class GameManager : MonoBehaviour
         {
             ResetBestTime();
         }
-    }
-
-    private void SetGameSuccess()
-    {
-        
-    }
-
-    private void SetGameOver()
-    {
-
     }
 
     public void SetTimeScaleAndFixedDeltaTime(float timeScale)
