@@ -72,6 +72,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowPausePanel(bool showPausePanel)
     {
+        _pregameCountDownText.text = "";
         _pausePanel.SetActive(showPausePanel);
     }
 
