@@ -30,6 +30,14 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject _stagePrefab = null;
 
+    [SerializeField]
+    private MainCamera _mainCameraScript = null;
+    private bool _setCameraToPlayerPosition = false;
+    [SerializeField]
+    private Vector3 _cameraMapPosition = new Vector3(0, 10.75f, -56);
+    [SerializeField]
+    private Vector3 _cameraPlayerPosition = new Vector3(0, 0, -20);
+
     private float _bestTimeFloat = 0.0f;
     private string _bestTimeText = "";
 
@@ -55,6 +63,13 @@ public class GameManager : MonoBehaviour
         {
             _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         }
+
+        if (_mainCameraScript == null)
+        {
+            _mainCameraScript = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MainCamera>();
+        }
+
+        Debug.Log(_mainCameraScript.transform.position);
 
         switch (gameState)
         {
@@ -90,7 +105,7 @@ public class GameManager : MonoBehaviour
 
     private void ResetBestTime()
     {
-        SetPlayerPrefBestTime(44, "00:44.00");
+        SetPlayerPrefBestTime(60, "01:00.00");
         _uiManager.UpdateBestTime(_bestTimeText);
     }
 
@@ -105,11 +120,26 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.R))
         {
+            _mainCameraScript.SetCameraPosition(_cameraPlayerPosition);
+
             SetPreGame();
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
             ResetBestTime();
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (_setCameraToPlayerPosition == true)
+            {
+                _mainCameraScript.SetCameraPosition(_cameraPlayerPosition);
+            }
+            else
+            {
+                _mainCameraScript.SetCameraPosition(_cameraMapPosition);
+            }
+
+            _setCameraToPlayerPosition = !_setCameraToPlayerPosition;
         }
     }
 
