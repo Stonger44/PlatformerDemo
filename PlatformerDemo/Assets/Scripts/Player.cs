@@ -83,27 +83,30 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (_controller.isGrounded)
-            {
-                if (horizontalInput != 0)
-                    _xVelocity = horizontalInput * 2f;
-            }
-            else
-            {
-                if (horizontalInput != 0)
-                {
-                    _xVelocity += horizontalInput * 0.5f;
+            if (horizontalInput != 0)
+                _xVelocity = horizontalInput * 2f;
 
-                    if (_xVelocity > 1.5f)
-                    {
-                        _xVelocity = 1.5f;
-                    }
-                    if (_xVelocity < -1.5f)
-                    {
-                        _xVelocity = -1.5f;
-                    }
-                }
-            }
+            //if (_controller.isGrounded)
+            //{
+            //    if (horizontalInput != 0)
+            //        _xVelocity = horizontalInput * 2f;
+            //}
+            //else
+            //{
+            //    if (horizontalInput != 0)
+            //    {
+            //        _xVelocity += horizontalInput * 0.5f;
+
+            //        if (_xVelocity > 1.5f)
+            //        {
+            //            _xVelocity = 1.5f;
+            //        }
+            //        if (_xVelocity < -1.5f)
+            //        {
+            //            _xVelocity = -1.5f;
+            //        }
+            //    }
+            //}
         }
 
         moveDirection = new Vector3(_xVelocity, 0, 0);
@@ -113,19 +116,22 @@ public class Player : MonoBehaviour
         {
             _yVelocity = -5f;
 
-            if (_xVelocity < 0)
+            if (horizontalInput == 0)
             {
-                _xVelocity += 0.1f;
-
-                if (_xVelocity > 0)
-                    _xVelocity = 0;
-            }
-            if (_xVelocity > 0)
-            {
-                _xVelocity -= 0.1f;
-
                 if (_xVelocity < 0)
-                    _xVelocity = 0;
+                {
+                    _xVelocity += 0.1f;
+
+                    if (_xVelocity > 0)
+                        _xVelocity = 0;
+                }
+                if (_xVelocity > 0)
+                {
+                    _xVelocity -= 0.1f;
+
+                    if (_xVelocity < 0)
+                        _xVelocity = 0;
+                } 
             }
 
             _canJump = true;
