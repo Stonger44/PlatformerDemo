@@ -4,12 +4,26 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    //GameStart
-    //PreGame
-    //GameRunning
-    //GamePaused
-    //GameSuccess
-    //GameOver
+    /*----------Sound Effects----------*\
+
+        -New High Score: FX7 - LevelUp 3
+        -EndGameSuccess: FX44
+        -Clear High Score: FX11
+        -Collect Coin: FX41, FX10? 
+
+    \*----------Sound Effects----------*/
+
+
+    /*----------Game States----------*\
+
+        -GameStart
+        -PreGame
+        -GameRunning
+        -GamePaused
+        -GameSuccess
+        -GameOver
+
+    \*----------Game States----------*/
     public string gameState = "GameStart";
 
     private float _elapsedTime = 0.0f;
