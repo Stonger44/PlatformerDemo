@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
         -EndGameSuccess: FX44
         -Clear High Score: FX11
         -Collect Coin: FX41, FX10? 
+        -Jumps: Jump7?, Jump13?, Jump12?
+        -BGM: LAZZULI LUVS_instrument?!, Music/Dance002?, Music/Dance006?, Darksider
 
     \*----------Sound Effects----------*/
 
