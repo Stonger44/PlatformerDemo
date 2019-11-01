@@ -112,7 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lowerBounds: -100
   _speed: 5
-  _gravity: 0.5
+  _gravity: 1
   _terminalVelocity: -50
   _jumpPower: 15
   _perfectDoubleJumpPower: 20

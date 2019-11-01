@@ -57,9 +57,15 @@ public class GameManager : MonoBehaviour
     private float _bestTimeFloat = 0.0f;
     private string _bestTimeText = "";
 
+    private AudioSource _backGroundMusic = null;
+
     // Start is called before the first frame update
     void Start()
     {
+        _backGroundMusic = GameObject.FindGameObjectWithTag("BGM").GetComponent<AudioSource>();
+        if (_backGroundMusic != null && _backGroundMusic.isPlaying)
+            _backGroundMusic.Stop();
+
         _stage = GameObject.Find("Stage");
         _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
@@ -84,8 +90,6 @@ public class GameManager : MonoBehaviour
         {
             _mainCameraScript = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MainCamera>();
         }
-
-        Debug.Log(_mainCameraScript.transform.position);
 
         switch (gameState)
         {
@@ -167,6 +171,8 @@ public class GameManager : MonoBehaviour
 
         SetTimeScaleAndFixedDeltaTime(1);
 
+        _backGroundMusic.Stop();
+
         _countDownEndTime = Time.time + 3;
         _elapsedTime = 0.0f;
         _uiManager.ShowPausePanel(false);
@@ -227,6 +233,7 @@ public class GameManager : MonoBehaviour
         else
         {
             _preGameCountDownText = "GO!!";
+            _backGroundMusic.Play();
             gameState = "GameRunning";
         }
 
@@ -278,9 +285,12 @@ public class GameManager : MonoBehaviour
     {
         SetTimeScaleAndFixedDeltaTime(0);
 
+        _backGroundMusic.Pause();
+
         if (Input.GetKeyDown(KeyCode.P))
         {
             gameState = "GameRunning";
+            _backGroundMusic.UnPause();
             _uiManager.ShowPausePanel(false);
         }
         if (Input.GetKeyDown(KeyCode.R))
@@ -359,6 +369,7 @@ public class GameManager : MonoBehaviour
         _gameFinished = true;
 
         SetTimeScaleAndFixedDeltaTime(0);
+        _backGroundMusic.Stop();
         _endGameSlowMoEndTime = 0.0f;
 
         if (_playerScript.collectibles < _uiManager.totalCollectibleCount)

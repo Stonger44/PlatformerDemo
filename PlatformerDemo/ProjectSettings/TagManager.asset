@@ -9,6 +9,7 @@ TagManager:
   - MovingPlatform
   - GameManager
   - Platform
+  - BGM
   layers:
   - Default
   - TransparentFX
