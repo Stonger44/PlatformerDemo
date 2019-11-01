@@ -15,12 +15,9 @@ public class Cube : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_renderer.enabled == false)
-        {
-            return;
-        }
+        Debug.Log(Time.time);
 
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) && _renderer.enabled)
         {
             _renderer.enabled = false;
 
