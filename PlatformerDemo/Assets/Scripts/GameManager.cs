@@ -6,12 +6,13 @@ public class GameManager : MonoBehaviour
 {
     /*----------Sound Effects----------*\
 
-        -New High Score: FX7 - LevelUp 3
-        -EndGameSuccess: FX44
+        -New High Score: FX6, FX7
+        -EndGameSuccess: FX5
         -Clear High Score: FX11
-        -Collect Coin: FX41, FX10? 
+        -Collect Coin: FX41
         -Jumps: Jump7?, Jump13?, Jump12?
         -BGM: LAZZULI LUVS_instrument?!, Music/Dance002?, Music/Dance006?, Darksider
+        -CountDown Blips: 
 
     \*----------Sound Effects----------*/
 
