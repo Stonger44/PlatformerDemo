@@ -2962,6 +2962,11 @@ MonoBehaviour:
   _cameraPlayerPosition: {x: 0, y: 0, z: -20}
   _countDownBlip: {fileID: 8300000, guid: f606d253869466640a122f73d92fe622, type: 3}
   _countDownBlipFinal: {fileID: 8300000, guid: 17c9ea5725d4bef4191f1aa99c65da4d, type: 3}
+  _resetScoreSound: {fileID: 8300000, guid: 96f312f7d4143814598a9c70ef527dfe, type: 3}
+  _endGameSuccessTune: {fileID: 8300000, guid: 4bfe44cae2deb05478b74429a0beb706, type: 3}
+  _endGameNewHighScoreTune: {fileID: 8300000, guid: 81b0cfee00c0774478b89fbd05cd3103,
+    type: 3}
+  _endGameFailureTune: {fileID: 8300000, guid: 7adb74338cbef2944af57972fead7849, type: 3}
 --- !u!4 &1223559159
 Transform:
   m_ObjectHideFlags: 0
@@ -4244,7 +4249,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a31b08db80e4d5049aabd006924c986b, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.05
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0

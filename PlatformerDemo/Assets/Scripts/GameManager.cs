@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : BaseScript
 {
     /*----------Sound Effects----------*\
 
@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
         -GameRunning
         -GamePaused
         -GameSuccess
-        -GameOver
 
     \*----------Game States----------*/
     public string gameState = "GameStart";
@@ -67,6 +66,14 @@ public class GameManager : MonoBehaviour
     private AudioClip _countDownBlip = null;
     [SerializeField]
     private AudioClip _countDownBlipFinal = null;
+    [SerializeField]
+    private AudioClip _resetScoreSound = null;
+    [SerializeField]
+    private AudioClip _endGameSuccessTune = null;
+    [SerializeField]
+    private AudioClip _endGameNewHighScoreTune = null;
+    [SerializeField]
+    private AudioClip _endGameFailureTune = null;
 
     private float _canPauseOrResetGameTime = 0;
 
@@ -142,6 +149,7 @@ public class GameManager : MonoBehaviour
     {
         SetPlayerPrefBestTime(60, "01:00.00");
         _uiManager.UpdateBestTime(_bestTimeText);
+        PlayAudioClip(_soundEffect, _resetScoreSound);
     }
 
     private void UpdateGameStart()
@@ -221,11 +229,6 @@ public class GameManager : MonoBehaviour
     {
         SetTimeScaleAndFixedDeltaTime(1);
 
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    SetPreGame();
-        //}
-
         UpdatePreGameCountDown();
     }
 
@@ -258,12 +261,12 @@ public class GameManager : MonoBehaviour
         {
             if (timeLeft >= 0)
             {
-                PlayAudioClip(_countDownBlip);
-                StartCoroutine(StopAudioSource_Routine(1));
+                PlayAudioClip(_soundEffect, _countDownBlip);
+                StartCoroutine(StopAudioSource_Routine(_soundEffect, 1));
             }
             else
             {
-                PlayAudioClip(_countDownBlipFinal);
+                PlayAudioClip(_soundEffect, _countDownBlipFinal);
                 _backGroundMusic.Play();
                 gameState = "GameRunning";
                 _canPauseOrResetGameTime = Time.time + 3.0f;
@@ -400,7 +403,10 @@ public class GameManager : MonoBehaviour
 
     public void SetEndGame()
     {
+        AudioClip endGameAudioClip = null; 
+
         _gameFinished = true;
+        gameState = "GameSuccess";
 
         SetTimeScaleAndFixedDeltaTime(0);
         _backGroundMusic.Stop();
@@ -409,6 +415,7 @@ public class GameManager : MonoBehaviour
         if (_playerScript.collectibles < _uiManager.totalCollectibleCount)
         {
             _uiManager.UpdateEndGamePanel(_timerText, _bestTimeText, "GameOver");
+            endGameAudioClip = _endGameFailureTune;
         }
         else if (_elapsedTime < _bestTimeFloat)
         {
@@ -417,26 +424,17 @@ public class GameManager : MonoBehaviour
             if (_timerText == _bestTimeText)
             {
                 _uiManager.UpdateEndGamePanel(_timerText, _bestTimeText, "NewBestTime");
+                endGameAudioClip = _endGameNewHighScoreTune;
             }
         }
         else
         {
             _uiManager.UpdateEndGamePanel(_timerText, _bestTimeText, "Success");
+            endGameAudioClip = _endGameSuccessTune;
         }
 
         _uiManager.ShowEndGamePanel(true);
-    }
 
-    private void PlayAudioClip(AudioClip audioClip)
-    {
-        _soundEffect.clip = audioClip;
-        _soundEffect.Play();
-    }
-
-    private IEnumerator StopAudioSource_Routine(float waitForSeconds)
-    {
-        yield return new WaitForSeconds(waitForSeconds);
-
-        _soundEffect.Stop();
+        PlayAudioClip(_soundEffect, endGameAudioClip);
     }
 }

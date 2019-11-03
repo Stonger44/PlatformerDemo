@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour
+public class Player : BaseScript
 {
     private CharacterController _controller;
 
@@ -37,6 +37,18 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     private Vector3 _startingPosition = new Vector3(0, 3, 0);
 
+    [SerializeField]
+    private AudioSource _soundEffect = null;
+
+    [SerializeField]
+    private AudioClip _collectCollectableSound = null;
+    [SerializeField]
+    private AudioClip _jumpSound = null;
+    [SerializeField]
+    private AudioClip _perfectDoubleAndWallJumpSound = null;
+    [SerializeField]
+    private AudioClip _playerRespawnSound = null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +56,10 @@ public class Player : MonoBehaviour
 
         _gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         _uiManager = GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>();
+
+        _soundEffect = this.GetComponent<AudioSource>();
+        if (_soundEffect == null)
+            Debug.Log("Player _soundEffect is null!");
 
         if (_uiManager != null)
         {
@@ -59,7 +75,7 @@ public class Player : MonoBehaviour
             Move(); 
         }
 
-        if (this.transform.position.y < _lowerBounds)
+        if ((this.transform.position.y < _lowerBounds) && _lives > 0)
         {
             DamagePlayer();
         }
@@ -139,6 +155,7 @@ public class Player : MonoBehaviour
                 _yVelocity = _jumpPower;
                 _canJump = false;
                 _canDoubleJump = true;
+                PlayAudioClip(_soundEffect, _jumpSound, 0.2f);
             }
         }
         else
@@ -148,10 +165,12 @@ public class Player : MonoBehaviour
                 if (_yVelocity <= 3.0f && _yVelocity > 0.0f)
                 {
                     _yVelocity = _perfectDoubleJumpPower;
+                    PlayAudioClip(_soundEffect, _perfectDoubleAndWallJumpSound, 0.2f);
                 }
                 else
                 {
                     _yVelocity = _jumpPower;
+                    PlayAudioClip(_soundEffect, _jumpSound, 0.2f);
                 }
 
                 _canJump = false;
@@ -183,6 +202,8 @@ public class Player : MonoBehaviour
                     _xVelocity = hit.normal.x * 2f;
 
                     _midairControlReEnabledTime = Time.time + 0.5f;
+
+                    PlayAudioClip(_soundEffect, _jumpSound, 0.2f);
                 }
                 else
                 {
@@ -205,6 +226,8 @@ public class Player : MonoBehaviour
         {
             _uiManager.UpdateCollectibleText(collectibles);
         }
+
+        PlayAudioClip(_soundEffect, _collectCollectableSound, 0.5f);
     }
 
     public void DamagePlayer()
@@ -224,6 +247,8 @@ public class Player : MonoBehaviour
             this.transform.position = _startingPosition;
             _yVelocity = 0.0f;
             _xVelocity = 0.0f;
+
+            PlayAudioClip(_soundEffect, _playerRespawnSound, 0.25f);
         }
     }
 }
