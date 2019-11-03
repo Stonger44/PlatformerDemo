@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     private MainCamera _mainCameraScript = null;
     private bool _setCameraToPlayerPosition = false;
     [SerializeField]
-    private Vector3 _cameraMapPosition = new Vector3(0, 10.75f, -56);
+    private Vector3 _cameraMapPosition = new Vector3(0, 10.75f, -60);
     [SerializeField]
     private Vector3 _cameraPlayerPosition = new Vector3(0, 0, -20);
 
@@ -60,12 +60,26 @@ public class GameManager : MonoBehaviour
 
     private AudioSource _backGroundMusic = null;
 
+
+    private AudioSource _soundEffect = null;
+
+    [SerializeField]
+    private AudioClip _countDownBlip = null;
+    [SerializeField]
+    private AudioClip _countDownBlipFinal = null;
+
+    private float _canPauseOrResetGameTime = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         _backGroundMusic = GameObject.FindGameObjectWithTag("BGM").GetComponent<AudioSource>();
         if (_backGroundMusic != null && _backGroundMusic.isPlaying)
             _backGroundMusic.Stop();
+
+        _soundEffect = this.GetComponent<AudioSource>();
+        if (_soundEffect == null)
+            Debug.Log("Sound Effect Audio Source is null!");
 
         _stage = GameObject.Find("Stage");
         _playerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
@@ -207,16 +221,18 @@ public class GameManager : MonoBehaviour
     {
         SetTimeScaleAndFixedDeltaTime(1);
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SetPreGame();
-        }
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    SetPreGame();
+        //}
 
         UpdatePreGameCountDown();
     }
 
     private void UpdatePreGameCountDown()
     {
+        _soundEffect.clip = _countDownBlip;
+
         float timeLeft = _countDownEndTime - Time.time;
 
         if (timeLeft >= 2)
@@ -234,11 +250,25 @@ public class GameManager : MonoBehaviour
         else
         {
             _preGameCountDownText = "GO!!";
-            _backGroundMusic.Play();
-            gameState = "GameRunning";
         }
 
         _uiManager.UpdatePreGameCountDowntext(_preGameCountDownText);
+
+        if (_soundEffect.isPlaying == false)
+        {
+            if (timeLeft >= 0)
+            {
+                PlayAudioClip(_countDownBlip);
+                StartCoroutine(StopAudioSource_Routine(1));
+            }
+            else
+            {
+                PlayAudioClip(_countDownBlipFinal);
+                _backGroundMusic.Play();
+                gameState = "GameRunning";
+                _canPauseOrResetGameTime = Time.time + 3.0f;
+            }
+        }
     }
 
     private void UpdateGameRunning()
@@ -247,14 +277,17 @@ public class GameManager : MonoBehaviour
 
         UpdateTimer();
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Time.time > _canPauseOrResetGameTime)
         {
-            gameState = "GamePaused";
-            _uiManager.ShowPausePanel(true);
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SetPreGame();
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                gameState = "GamePaused";
+                _uiManager.ShowPausePanel(true);
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SetPreGame();
+            } 
         }
 
         if (_playerScript.collectibles == _uiManager.totalCollectibleCount)
@@ -392,5 +425,18 @@ public class GameManager : MonoBehaviour
         }
 
         _uiManager.ShowEndGamePanel(true);
+    }
+
+    private void PlayAudioClip(AudioClip audioClip)
+    {
+        _soundEffect.clip = audioClip;
+        _soundEffect.Play();
+    }
+
+    private IEnumerator StopAudioSource_Routine(float waitForSeconds)
+    {
+        yield return new WaitForSeconds(waitForSeconds);
+
+        _soundEffect.Stop();
     }
 }
