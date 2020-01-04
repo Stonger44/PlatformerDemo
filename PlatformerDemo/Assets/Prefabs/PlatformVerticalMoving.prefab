@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 2350325283952964618}
   - component: {fileID: 2350325283952964613}
   - component: {fileID: 265985578152015486}
+  - component: {fileID: -2937538629734868740}
   m_Layer: 0
   m_Name: PlatformVerticalMoving
-  m_TagString: Platform
+  m_TagString: MovingPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,6 +68,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -107,3 +109,19 @@ MonoBehaviour:
   _pointA: {x: 0, y: 0, z: 0}
   _pointB: {x: 0, y: 0, z: 0}
   _speed: 5
+--- !u!54 &-2937538629734868740
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2350325283952964612}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

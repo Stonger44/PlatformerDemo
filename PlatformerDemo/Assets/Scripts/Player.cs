@@ -27,6 +27,8 @@ public class Player : BaseScript
     private bool _canJump = false;
     private bool _canDoubleJump = false;
 
+    [SerializeField] private bool _headIsTouchingPlatform = false;
+
     private float _midairControlReEnabledTime = 0.0f;
 
     public int collectibles = 0;
@@ -65,6 +67,8 @@ public class Player : BaseScript
         {
             _uiManager.UpdateLivesText(_lives);
         }
+
+        _headIsTouchingPlatform = false;
     }
 
     // Update is called once per frame
@@ -72,7 +76,8 @@ public class Player : BaseScript
     {
         if (_gameManager.gameState == "PreGame" || _gameManager.gameState == "GameRunning" || _gameManager.gameState == "GameSuccess")
         {
-            Move(); 
+            Move();
+            Debug.Log("yVelocity: " + _yVelocity);
         }
 
         if ((this.transform.position.y < _lowerBounds) && _lives > 0)
@@ -129,10 +134,6 @@ public class Player : BaseScript
         {
             _yVelocity = -5f;
 
-            //if (horizontalInput == 0)
-            //{
-
-            //}
             if (_xVelocity < 0)
             {
                 _xVelocity += 0.1f;
@@ -177,6 +178,11 @@ public class Player : BaseScript
                 _canDoubleJump = false;
             }
 
+            if (_headIsTouchingPlatform)
+            {
+                _yVelocity = 0;
+            }
+
             _yVelocity -= _gravity;
 
             if (_yVelocity < _terminalVelocity)
@@ -188,6 +194,30 @@ public class Player : BaseScript
         velocity.y = _yVelocity;
 
         _controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Platform") || other.CompareTag("MovingPlatform"))
+        {
+            _headIsTouchingPlatform = true;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Platform") || other.CompareTag("MovingPlatform"))
+        {
+            _headIsTouchingPlatform = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Platform") || other.CompareTag("MovingPlatform"))
+        {
+            _headIsTouchingPlatform = false;
+        }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
