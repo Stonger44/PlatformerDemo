@@ -115,10 +115,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lowerBounds: -100
   _speed: 5
-  _gravity: 1
+  _gravity: 0.5
   _terminalVelocity: -50
   _jumpPower: 15
   _perfectDoubleJumpPower: 20
+  _headIsTouchingPlatform: 0
   collectibles: 0
   _soundEffect: {fileID: 0}
   _collectCollectableSound: {fileID: 8300000, guid: 19e7f2e1accb18b4b8d9fee8f21cfe47,
@@ -244,11 +245,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6098274000280087025}
     m_Modifications:
-    - target: {fileID: 4928864980888800204, guid: 68d7df950fd87d3449ae75ee7594b302,
-        type: 3}
-      propertyPath: m_Name
-      value: Main Camera
-      objectReference: {fileID: 0}
     - target: {fileID: 4928864980888800201, guid: 68d7df950fd87d3449ae75ee7594b302,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -303,6 +299,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928864980888800204, guid: 68d7df950fd87d3449ae75ee7594b302,
+        type: 3}
+      propertyPath: m_Name
+      value: Main Camera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68d7df950fd87d3449ae75ee7594b302, type: 3}
