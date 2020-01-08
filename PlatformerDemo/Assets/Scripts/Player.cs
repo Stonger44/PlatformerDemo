@@ -27,7 +27,7 @@ public class Player : BaseScript
     private bool _canJump = false;
     private bool _canDoubleJump = false;
 
-    [SerializeField] private bool _headIsTouchingPlatform = false;
+    [SerializeField] public bool headIsTouchingPlatform = false;
 
     private float _midairControlReEnabledTime = 0.0f;
 
@@ -68,7 +68,7 @@ public class Player : BaseScript
             _uiManager.UpdateLivesText(_lives);
         }
 
-        _headIsTouchingPlatform = false;
+        headIsTouchingPlatform = false;
     }
 
     // Update is called once per frame
@@ -77,7 +77,7 @@ public class Player : BaseScript
         if (_gameManager.gameState == "PreGame" || _gameManager.gameState == "GameRunning" || _gameManager.gameState == "GameSuccess")
         {
             Move();
-            Debug.Log("yVelocity: " + _yVelocity);
+            //Debug.Log("yVelocity: " + _yVelocity);
         }
 
         if ((this.transform.position.y < _lowerBounds) && _lives > 0)
@@ -178,7 +178,7 @@ public class Player : BaseScript
                 _canDoubleJump = false;
             }
 
-            if (_headIsTouchingPlatform)
+            if (headIsTouchingPlatform)
             {
                 _yVelocity = 0;
             }
@@ -194,33 +194,6 @@ public class Player : BaseScript
         velocity.y = _yVelocity;
 
         _controller.Move(velocity * Time.deltaTime);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Platform") || other.CompareTag("MovingPlatform"))
-        {
-            _headIsTouchingPlatform = true;
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Platform") || other.CompareTag("MovingPlatform"))
-        {
-            Debug.Log(other.gameObject.name);
-            _headIsTouchingPlatform = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        _headIsTouchingPlatform = false;
-
-        if (other.CompareTag("Platform") || other.CompareTag("MovingPlatform"))
-        {
-            
-        }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
