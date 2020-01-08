@@ -437,4 +437,9 @@ public class GameManager : BaseScript
 
         PlayAudioClip(_soundEffect, endGameAudioClip);
     }
+
+    public void QuitApplication()
+    {
+        Application.Quit();
+    }
 }

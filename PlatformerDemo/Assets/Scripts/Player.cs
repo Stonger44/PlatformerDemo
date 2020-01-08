@@ -208,15 +208,18 @@ public class Player : BaseScript
     {
         if (other.CompareTag("Platform") || other.CompareTag("MovingPlatform"))
         {
+            Debug.Log(other.gameObject.name);
             _headIsTouchingPlatform = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        _headIsTouchingPlatform = false;
+
         if (other.CompareTag("Platform") || other.CompareTag("MovingPlatform"))
         {
-            _headIsTouchingPlatform = false;
+            
         }
     }
 
