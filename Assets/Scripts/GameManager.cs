@@ -269,7 +269,7 @@ public class GameManager : BaseScript
                 PlayAudioClip(_soundEffect, _countDownBlipFinal);
                 _backGroundMusic.Play();
                 gameState = "GameRunning";
-                _canPauseOrResetGameTime = Time.time + 3.0f;
+                _canPauseOrResetGameTime = Time.time;
             }
         }
     }
